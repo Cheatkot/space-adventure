@@ -1,0 +1,121 @@
+{% load static %}
+
+<html lang="de">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+        <style type="text/css">
+            #main {
+                margin: 15%;
+                padding: 0px 10px;
+            }
+
+            .square {
+                content: "";
+                display: block;
+                padding-top: 100%;  /* initial ratio of 1:1*/
+            }
+        </style>
+
+        <title>{% block title %}Default{% endblock %}</title>
+
+        <link rel="stylesheet" href="{% static 'main/css/bootstrap.min.css' %}">
+    </head>
+
+    <body onload="setDisplayMode()" class="d-flex flex-column h-100 bg-light text-dark">
+        {% block navbar %}
+        <nav id="sidenav" class="navbar sticky-top navbar-expand-lg navbar-dark" style="background-color: #198754;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">BREZEL WARS</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/game">Game</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/chat/global">Chat</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Account
+                          </a>
+                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/login">Login</a></li>
+                            {% if not user.is_authenticated %}
+                            <li><a class="dropdown-item" href="/register">Register</a></li>
+                            {% endif %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                          </ul>
+                        </li>
+                    </ul>
+                    <form class="d-flex">
+                        <button id="darkModeButton" type="button" onclick="switchDarkMode()" class="btn btn-dark">Switch to Darkmode</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        {% endblock %}
+        <div id="content" name="content" class="main flex-shrink-0">
+            <div class="container">
+                {% block content %}
+                No content here.
+                {% endblock %}
+            </div>
+        </div>
+        {% block footer %}
+        <footer class="footer mt-auto py-3 border-top border-3" style="background-color: #a3cfbb;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h5>Get started</h5>
+                        <ul>
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/register">Sign up</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3">
+                        <h5>About us</h5>
+                        <ul>
+                            <li><a href="#">Project Information</a></li>
+                            <li><a href="#">Contact us</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3">
+                        <h5>Support</h5>
+                        <ul>
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Game Rules</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3">
+                        <h5>Legal</h5>
+                        <ul>
+                            <li><a href="#">Terms of Service</a></li>
+                            <li><a href="#">Terms of Use</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="container text-muted">
+                <p>© 2022 Niklas Loerper, Tim Plickat, Jonathan Trute</p>
+            </div>
+        </footer>
+        {% endblock %}
+
+        <script type="text/javascript" src="{% static 'main/js/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'main/js/bootstrap.bundle.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'main/js/cookie-handler.js' %}"></script>
+        <script type="text/javascript" src="{% static 'main/js/dark-mode.js' %}"></script>
+    </body>
+
+</html>
