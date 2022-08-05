@@ -1,10 +1,30 @@
 {% extends 'main/base.html'  %}
-
+{% load static %}
 {% block title %}Home{% endblock %}
 
 {% block content %}
     <h1>Home Page</h1>
     <p>Hallo {{ user.username }}!<br></p>
+    <div style="display:inline-block;width:70%">
+    <p>Herzlich Willkommen bei BREZEL WARS!</p>
+    <p>Hier kannst Du eine Abwandlung des Brettspiels Rosenkönig gegen anderen Spieler spielen.</p>
+    <p> <a href="/gamerules"><button type="button" class="btn btn-outline-primary" style="width:30%">Die Spielregeln findest Du hier!</button></a> </p>
+    <p>Zum Spielen benötigst Du einen Account.</p>
+    <p><a href ="/register"><button type="button" class="btn btn-outline-primary" style="width:30%">Hier kannst Du dich registrieren</button></a></p>
+    <p>Hast Du bereits einen Account? </br><a href="/login"><button type="button" class="btn btn-outline-primary" style="width:30%">Dann logge dich hier ein</button></a></p>
+    </br>
+
+    </br>
+    <p>
+    <button type="button" class="btn btn-primary">Zufälligen Gegner suchen</button>
+    <button type="button" class="btn btn-primary">Partie erstellen</button>
+    </p>
+    </div>
+    <div style="display:inline-block;vertical-align: top; width:29%; margin-left:auto; margin-right:auto" >
+    <img src="{% static "main/pictures/playingfield.jpg" %}" alt="Spielfeld">
+    </div>
+
+    <!--
     <p>TEST<br></p>
     <p>TEST<br></p>
     <p>TEST<br></p>
@@ -35,4 +55,6 @@
     <p>TEST<br></p>
     <p>TEST<br></p>
     <p>TEST<br></p>
+    -->
+
 {% endblock %}
