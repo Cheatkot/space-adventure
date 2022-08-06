@@ -16,7 +16,7 @@
 
     </br>
     <p>
-    <button type="button" class="btn btn-primary">Zufälligen Gegner suchen</button>
+    <button type="button" class="btn btn-primary" onclick="temp('{{ user.username }}')">Zufälligen Gegner suchen</button>
     <button type="button" class="btn btn-primary">Partie erstellen</button>
     </p>
     </div>
@@ -24,6 +24,20 @@
     <img src="{% static "main/pictures/playingfield.jpg" %}" alt="Spielfeld">
     </div>
 
+<script>
+function temp(user) {
+  var ul = document.getElementById("list");
+  var li = document.createElement("li");
+  li.appendChild(document.createTextNode(user));
+  ul.appendChild(li);
+
+}
+</script>
+
+<div style="display:inline-block;width:30%">
+    <h4>Spieler in Warteschlange:</h4>
+   <ul class="list-group" id="list"></ul>
+</div>
     <!--
     <p>TEST<br></p>
     <p>TEST<br></p>
