@@ -23,5 +23,6 @@ urlpatterns = [
     path('', include("django.contrib.auth.urls")),
     path('game/', include("game.urls")),
     path('chat/', include("chat.urls")),
+    path('waiting_room/', include("waiting_room.urls")),
     path('gamerules/', include("main.urls")),
 ]

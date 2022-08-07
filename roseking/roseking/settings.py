@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'authentication.apps.AuthenticationConfig',
     'game.apps.GameConfig',
     'chat.apps.ChatConfig',
+    'waiting_room'
 ]
 
 MIDDLEWARE = [

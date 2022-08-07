@@ -1,0 +1,37 @@
+{% extends "main/base.html" %}
+
+{% load static %}
+
+{% block title %}Waiting Room {% endblock %}
+
+{% block content %}
+
+<h1>Hallo {{ user.username }}! <br>
+    Waiting for Players... </h1>
+<h1 id="app">{{ text }}</h1>
+
+ {{ room_name|json_script:"room-name" }}
+    <script>
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+
+        const Socket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/waiting_room/'
+            + roomName
+            + '/'
+        );
+
+        Socket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.querySelector('#app').innerText = (data.user);
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+    </script>
+{% endblock %}
+
+{% block footer %}{% endblock %}
