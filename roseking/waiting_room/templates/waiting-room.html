@@ -6,8 +6,13 @@
 
 {% block content %}
 
-<h1>Hallo {{ user.username }}! <br>
-    Waiting for Players... </h1>
+<h1><center><br>Hallo {{ user.username }}! <br>
+   Bitte schließen Sie die Seite nicht!<br>
+    Warten auf zweiten Spieler...<br>
+<div class="spinner-border m-5" role="status">
+  <span class="sr-only"></span>
+</div></center>
+</h1>
 <h1 id="app">{{ text }}</h1>
 
  {{ room_name|json_script:"room-name" }}

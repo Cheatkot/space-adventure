@@ -17,19 +17,39 @@
     </br>
     <p>
     <a href="/waiting_room/global"><button type="button" class="btn btn-primary">Zufälligen Gegner suchen</button></a>
-    <button type="button" class="btn btn-primary">Partie erstellen</button>
+     <a id="waitingUrl" href=""><button type="button" class="btn btn-primary">Partie erstellen</button></a>
     </p>
     </div>
     <div style="display:inline-block;vertical-align: top; width:29%; margin-left:auto; margin-right:auto" >
     <img src="{% static "main/pictures/playingfield.jpg" %}" alt="Spielfeld">
     </div>
 
+
+
 <script>
+
+function createGUID() {
+  function random() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return random() + random() + '-' + random() + '-' + random() + '-' +
+    random() + '-' + random() + random() + random();
+}
+
+window.onload = function(){
+    var guid = createGUID();
+    document.getElementById('waitingUrl').href = "waiting_room/" + guid;
+};
+
 function temp(user) {
   var ul = document.getElementById("list");
   var li = document.createElement("li");
   li.appendChild(document.createTextNode(user));
   ul.appendChild(li);
+
+
 
 }
 </script>
