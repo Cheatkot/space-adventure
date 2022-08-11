@@ -6,19 +6,22 @@
 
 {% block content %}
 
-<h1><div align="center"><br>Hallo {{ user.username }}! <br>
-   Bitte schließen Du die Seite nicht!<br>
-    Warten auf zweiten Spieler...<br>
+<div align="center">
+    <h1><br>Hallo {{ user.username }}! <br>
+   Bitte schließ die Seite nicht!<br>
+    Warten auf zweiten Spieler...<br></h1>
 <div class="spinner-border m-5" role="status">
   <span class="sr-only"></span>
-</h1>
-    <textarea id="chat-log" cols="100" rows="2"></textarea><br>
+</div>
+    <label id="usersOnline">User: 0</label><br> </div>
     {{ room_name|json_script:"room-name" }}
+    {{ user.username|json_script:"user-name" }}
     <script>
+    function connect() {
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
         // TODO: wss = https
-        const socket = new WebSocket(
+        var socket = new WebSocket(
             'ws://'
             + window.location.host
             + '/ws/waiting_room/'
@@ -26,33 +29,60 @@
             + '/'
         );
 
-        socket.onopen = function() {
-               document.querySelector('#chat-log').value += document.getElementById('app').textContent;
-               socket.send(JSON.stringify({
-                'user': document.getElementById('app').textContent
-            }));
+        socket.onmessage = function (e) {
+            console.log('data');
+            const data = JSON.parse(e.data);
+        }
+
+        socket.onopen = function () {
+            socket.send('hi');
+            let btn = document.createElement("button");
+            btn.innerHTML = "Save";
+            btn.id = "btn";
+            btn.onclick = function () {
+                alert("Button is clicked");
+                socket.send(JSON.stringify(
+                    {
+                        'message': "warum funktioniert die scheißee einfach nicht",
+                    }));
+            };
+            document.body.appendChild(btn);
+            console.log('socket opened')
         };
 
-        socket.onclose = function(e) {
+        socket.onclose = function (e) {
             console.error('Chat socket closed unexpectedly');
         };
 
-        socket.onmessage = function(e) {
+        socket.addEventListener('message', (event) => {
+            document.querySelector('#usersOnline').value += 'test'
+            console.log('Message from server ', event.data);
+        });
+
+        socket.onmessage = function (e) {
             const data = JSON.parse(e.data);
             console.log(data);
-            document.querySelector('#chat-log').value += 'Users' + data.users;
+
+             switch (data.type) {
+                case "user_list":
+                    if (data.users.count() == 2) {
+                        let btn = document.createElement("button");
+                        btn.innerHTML = "Start Game";
+                        btn.onclick = function () {
+                            alert("Button is clicked");
+                        };
+                        document.body.appendChild(btn);
+                    } else if (data.users.count() > 2) {
+                        location.href = '/home.html';
+                    }
+                    break;
+                default:
+                    console.error("Unknown message type!");
+                    break;
             }
-
-        document.querySelector('#btn').onclick = function(e) {
-            const messageInput = document.getElementById('app').textContent;
-            //const message = messageInput.value;
-            socket.send(JSON.stringify({
-                'user': messageInput
-            }));
-            messageInput.value = '';
-        };
-
-
+        }
+    }
+    connect();
     </script>
 {% endblock %}
 
