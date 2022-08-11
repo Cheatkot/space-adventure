@@ -6,20 +6,19 @@
 
 {% block content %}
 
-<h1><center><br>Hallo {{ user.username }}! <br>
-   Bitte schließen Sie die Seite nicht!<br>
+<h1><div align="center"><br>Hallo {{ user.username }}! <br>
+   Bitte schließen Du die Seite nicht!<br>
     Warten auf zweiten Spieler...<br>
 <div class="spinner-border m-5" role="status">
   <span class="sr-only"></span>
-</div></center>
 </h1>
-<h1 id="app">{{ text }}</h1>
-
- {{ room_name|json_script:"room-name" }}
+    <textarea id="chat-log" cols="100" rows="2"></textarea><br>
+    {{ room_name|json_script:"room-name" }}
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
-        const Socket = new WebSocket(
+        // TODO: wss = https
+        const socket = new WebSocket(
             'ws://'
             + window.location.host
             + '/ws/waiting_room/'
@@ -27,14 +26,32 @@
             + '/'
         );
 
-        Socket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            document.querySelector('#app').innerText = (data.user);
+        socket.onopen = function() {
+               document.querySelector('#chat-log').value += document.getElementById('app').textContent;
+               socket.send(JSON.stringify({
+                'user': document.getElementById('app').textContent
+            }));
         };
 
-        chatSocket.onclose = function(e) {
+        socket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
         };
+
+        socket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            console.log(data);
+            document.querySelector('#chat-log').value += 'Users' + data.users;
+            }
+
+        document.querySelector('#btn').onclick = function(e) {
+            const messageInput = document.getElementById('app').textContent;
+            //const message = messageInput.value;
+            socket.send(JSON.stringify({
+                'user': messageInput
+            }));
+            messageInput.value = '';
+        };
+
 
     </script>
 {% endblock %}
