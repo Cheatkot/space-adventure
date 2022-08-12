@@ -1,4 +1,5 @@
 import json
+import uuid
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 
@@ -62,7 +63,7 @@ class WaitingRoom(WebsocketConsumer):
             self.room_group_name,
             {
                 'type': 'user_list',
-                'message': 'sad',
+                'message': str(uuid.uuid4()),
                 'users': users
             }
         )

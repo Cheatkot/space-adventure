@@ -10,35 +10,11 @@
     <h1><p>Hallo {{ user.username }}! <p>
         <p>Bitte schließ die Seite nicht!</p>
         <p>Warten auf zweiten Spieler...</p>
-     <p> <label id="usersOnline">User: 0</label></p><br>
     </h1>
     <div class="spinner-border m-5" role="status">
         <span class="sr-only"></span>
     </div>
 </div>
-<div id = "notification" style="margin-top:50px;display:none" >
-        <h1><p class="text-center">Um das Spiel zu starten muss einer von den Spielern den Button 'Spiel starten' drücken</p></h1>
-</div>
-<div id="match" class="row" style="margin-top:150px;display:none">
-    <div class="col">
-        <div class="text-center" >
-            <h1><label id="firstPlayer" >Player 1</label></h1>
-        </div>
-    </div>
-    <div class="col">
-        <div class=" text-center">
-            <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only"></span>
-            </div>
-        </div>
-    </div>
-    <div class="col">
-       <div class="text-center" >
-            <h1><label id="secondPlayer" >Player 2</label></h1>
-        </div>
-    </div>
-</div>
-
     {{ room_name|json_script:"room-name" }}
     {{ user.username|json_script:"user-name" }}
     <script>
@@ -78,28 +54,9 @@
 
              switch (data.type) {
                 case "user_list":
-                    var users = data.users;
-                    console.log(users[0]);
-                    document.querySelector('#usersOnline').innerHTML = users.lengt
-                     document.querySelector('#firstPlayer').innerHTML  = users[0];
-                     document.querySelector('#secondPlayer').innerHTML = users[1];
                     if (data.users.length == 2) {
-                        document.getElementById("welcomeText").style.display = "none"
-                        document.getElementById("notification").style.display = "flex"
-                        document.getElementById("match").style.display = "flex"
-                        let btn = document.createElement("button");
-                        btn.className = "btn btn-primary btn-lg";
-                        btn.innerHTML =  "Spiel starten";
-                        btn.style.height = "50px"
-                        btn.style.marginTop = "150px"
-                        btn.style.marginLeft = "30%"
-                        btn.style.marginRight = "30%"
-                        btn.onclick = function () {
-                            alert("Button is clicked");
-                        };
-                        document.body.appendChild(btn);
-                    } else if (data.users.length > 2) {
-                        location.href = '/';
+                        location.href = '/game/'+ data.message;
+                        console.log(users[0]);
                     }
                     break;
                 default:
@@ -109,6 +66,16 @@
         }
     }
     connect();
+
+    function createGUID() {
+  function random() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return random() + random() + '-' + random() + '-' + random() + '-' +
+    random() + '-' + random() + random() + random();
+}
     </script>
 {% endblock %}
 
