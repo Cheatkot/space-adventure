@@ -17,11 +17,21 @@
                 display: block;
                 padding-top: 100%;  /* initial ratio of 1:1*/
             }
+
+            .card-img-top {
+                width: 100%;
+                /*height: 15vh;*/
+                /*object-fit: cover;*/
+            }
         </style>
 
         <title>{% block title %}Default{% endblock %}</title>
 
         <link rel="stylesheet" href="{% static 'main/css/bootstrap.min.css' %}">
+
+        <script type="text/javascript" src="{% static 'main/js/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'main/js/bootstrap.bundle.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'main/js/cookie-handler.js' %}"></script>
     </head>
 
     <body onload="setDisplayMode()" class="d-flex flex-column h-100 bg-light text-dark">
@@ -112,9 +122,6 @@
         </footer>
         {% endblock %}
 
-        <script type="text/javascript" src="{% static 'main/js/jquery.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'main/js/bootstrap.bundle.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'main/js/cookie-handler.js' %}"></script>
         <script type="text/javascript" src="{% static 'main/js/dark-mode.js' %}"></script>
     </body>
 

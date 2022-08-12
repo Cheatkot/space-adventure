@@ -38,23 +38,16 @@ class ChatConsumer(WebsocketConsumer):
         message = text_data_json['message']
 
         message = message.strip()
-        message = message.replace("\n", "<br>")
-
-        print("This is good")
-        print(self.user)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S")) # TODO: Timezone ändern
 
         if not self.user.is_authenticated:
             return
-
-        print("This is better")
 
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
                 'type': 'chat_message',
                 'username': self.user.username,
-                'message': message,
+                'message': message.replace("\n", "<br>"),
                 'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             }
         )
