@@ -15,8 +15,9 @@ def add_to_waiting_room(room_name, user):
     if not room_name in ActiveWaitingRooms.keys():
         print('create waiting_room: ' + room_name)
         ActiveWaitingRooms[room_name] = []
-    print('add user: ' + user + ' to room: ' + room_name)
-    ActiveWaitingRooms[room_name] += [user]
+    if not user in ActiveWaitingRooms[room_name]:
+        print('add user: ' + user + ' to room: ' + room_name)
+        ActiveWaitingRooms[room_name] += [user]
 
 
 def remove_from_waiting_room(room_name, user):
@@ -44,9 +45,9 @@ class WaitingRoom(WebsocketConsumer):
 
         self.accept()
 
-        async_to_sync(self.channel_layer.group_add(
+        async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
-            self.channel_name))
+            self.channel_name)
 
         print('connected to channel: ' + self.room_group_name)
         print(ActiveWaitingRooms[self.room_name])
@@ -60,12 +61,16 @@ class WaitingRoom(WebsocketConsumer):
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
-                'type': 'user.list',
+                'type': 'user_list',
                 'message': 'sad',
                 'users': users
             }
         )
         print('send to group: ' + self.room_group_name)
+
+    def user_list(self, event):
+        print('Send Message to WebSocket')
+        self.send(text_data=json.dumps(event))
 
     def disconnect(self, close_code):
         remove_from_waiting_room(self.room_name, self.user.username)
@@ -76,6 +81,3 @@ class WaitingRoom(WebsocketConsumer):
         users = get_waiting_room(self.room_name)
         print(users)
 
-    def user_list(self, event):
-        print('Send Message to WebSocket')
-        self.send(text_data=json.dumps(event))
