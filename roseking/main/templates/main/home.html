@@ -15,19 +15,21 @@
     </br>
 
     </br>
+        {% if user.is_authenticated %}
     <p>
     <a href="/waiting_room/global"><button type="button" class="btn btn-primary">Zufälligen Gegner suchen</button></a>
      <a id="waitingUrl" href=""><button type="button" class="btn btn-primary">Partie erstellen</button></a>
     </p>
+        {% endif %}
     </div>
     <div style="display:inline-block;vertical-align: top; width:29%; margin-left:auto; margin-right:auto" >
     <img src="{% static "main/pictures/playingfield.jpg" %}" alt="Spielfeld">
     </div>
 
 
-
+{{ user.username|json_script:"user-name" }}
 <script>
-
+ const user = JSON.parse(document.getElementById('user-name').textContent);
 function createGUID() {
   function random() {
     return Math.floor((1 + Math.random()) * 0x10000)
