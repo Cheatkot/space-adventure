@@ -32,9 +32,27 @@
         <script type="text/javascript" src="{% static 'main/js/jquery.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'main/js/bootstrap.bundle.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'main/js/cookie-handler.js' %}"></script>
+        <script type="text/javascript" src="{% static 'main/js/modal.js' %}"></script>
     </head>
 
     <body onload="setDisplayMode()" class="d-flex flex-column h-100 bg-light text-dark">
+        <!-- Modal -->
+        <button id="mainModalButton" type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#mainModal">
+          Launch modal
+        </button>
+
+        <div class="modal fade" id="mainModal" tabindex="-1" aria-labelledby="mainModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div id="mainModalContent" class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="mainModalLabel">Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div id="mainModalBody" class="modal-body">Message</div>
+            </div>
+          </div>
+        </div>
+
         {% block navbar %}
         <nav id="sidenav" class="navbar sticky-top navbar-expand-lg navbar-dark" style="background-color: #198754;">
             <div class="container-fluid">
