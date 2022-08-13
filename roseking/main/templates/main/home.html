@@ -26,10 +26,7 @@
     <img src="{% static "main/pictures/playingfield.jpg" %}" alt="Spielfeld">
     </div>
 
-
-{{ user.username|json_script:"user-name" }}
 <script>
- const user = JSON.parse(document.getElementById('user-name').textContent);
 function createGUID() {
   function random() {
     return Math.floor((1 + Math.random()) * 0x10000)
@@ -45,38 +42,5 @@ window.onload = function(){
     document.getElementById('waitingUrl').href = "waiting_room/" + guid;
 };
 </script>
-
-    <!--
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    <p>TEST<br></p>
-    -->
 
 {% endblock %}

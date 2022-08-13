@@ -35,7 +35,6 @@
                     {
                         'message': "why? ",
                     }));
-            document.body.appendChild(btn);
             console.log('socket opened')
         };
 
@@ -56,7 +55,6 @@
                 case "user_list":
                     if (data.users.length == 2) {
                         location.href = '/game/'+ data.message;
-                        console.log(users[0]);
                     }
                     break;
                 default:
@@ -67,7 +65,7 @@
     }
     connect();
 
-    function createGUID() {
+function createGUID() {
   function random() {
     return Math.floor((1 + Math.random()) * 0x10000)
       .toString(16)
@@ -76,7 +74,7 @@
   return random() + random() + '-' + random() + '-' + random() + '-' +
     random() + '-' + random() + random() + random();
 }
-    </script>
+</script>
 {% endblock %}
 
 {% block footer %}{% endblock %}
