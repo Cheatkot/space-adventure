@@ -38,18 +38,16 @@ class Game:
             return -1
 
     def change_active_player(self):
-        print(self.check_possible_moves(self.active_player_number))
-        print("activeplayer:", self.active_player_number)
-
-        if self.check_possible_moves(self.active_player_number) in [-1, []]:
-            return
-
         if self.active_player_number == 1:
+            if self.check_possible_moves(2) in [-1, []]:
+                return
+
             self.active_player_number = 2
         else:
-            self.active_player_number = 1
+            if self.check_possible_moves(1) in [-1, []]:
+                return
 
-        print("activeplayer2:", self.active_player_number)
+            self.active_player_number = 1
 
     def get_player_cards(self, player_number):
         if player_number == 1:
