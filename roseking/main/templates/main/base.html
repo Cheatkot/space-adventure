@@ -17,14 +17,45 @@
                 display: block;
                 padding-top: 100%;  /* initial ratio of 1:1*/
             }
+
+            .card-img-top {
+                width: 100%;
+                /*height: 15vh;*/
+                /*object-fit: cover;*/
+            }
         </style>
 
         <title>{% block title %}Default{% endblock %}</title>
 
         <link rel="stylesheet" href="{% static 'main/css/bootstrap.min.css' %}">
+
+        <script type="text/javascript" src="{% static 'main/js/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'main/js/bootstrap.bundle.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'main/js/cookie-handler.js' %}"></script>
+        <script type="text/javascript" src="{% static 'main/js/modal.js' %}"></script>
     </head>
 
     <body onload="setDisplayMode()" class="d-flex flex-column h-100 bg-light text-dark">
+        <!-- Modal -->
+        <button id="mainModalButton" type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#mainModal">
+          Launch modal
+        </button>
+
+        <div class="modal fade" id="mainModal" tabindex="-1" aria-labelledby="mainModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div id="mainModalContent" class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="mainModalLabel" style="color: black">Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div id="mainModalBody" class="modal-body" style="color: black">Message</div>
+              <div id="mainModalFooter" class="modal-footer">
+                <button id="mainModalFooterButton" type="button" class="btn btn-primary">Button</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {% block navbar %}
         <nav id="sidenav" class="navbar sticky-top navbar-expand-lg navbar-dark" style="background-color: #198754;">
             <div class="container-fluid">
@@ -85,7 +116,7 @@
                     <div class="col-sm-3">
                         <h5>About us</h5>
                         <ul>
-                            <li><a href="#">Project Information</a></li>
+                            <li><a href="https://github.com/Cheatkot/space-adventure">Project Information</a></li>
                             <li><a href="#">Contact us</a></li>
                         </ul>
                     </div>
@@ -93,15 +124,15 @@
                         <h5>Support</h5>
                         <ul>
                             <li><a href="#">FAQ</a></li>
-                            <li><a href="#">Game Rules</a></li>
+                            <li><a href="/gamerules">Game Rules</a></li>
                         </ul>
                     </div>
                     <div class="col-sm-3">
                         <h5>Legal</h5>
                         <ul>
-                            <li><a href="#">Terms of Service</a></li>
-                            <li><a href="#">Terms of Use</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="/termsofservice">Terms of Service</a></li>
+                            <li><a href="/termsofservice">Terms of Use</a></li>
+                            <li><a href="/termsofservice">Privacy Policy</a></li>
                         </ul>
                     </div>
                 </div>
@@ -112,9 +143,6 @@
         </footer>
         {% endblock %}
 
-        <script type="text/javascript" src="{% static 'main/js/jquery.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'main/js/bootstrap.bundle.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'main/js/cookie-handler.js' %}"></script>
         <script type="text/javascript" src="{% static 'main/js/dark-mode.js' %}"></script>
     </body>
 

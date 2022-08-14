@@ -1,4 +1,4 @@
-FROM python:3.10-slim-buster
+FROM python:3.9-slim-buster
 
 WORKDIR /code
 
@@ -10,4 +10,5 @@ RUN pip3 install -r requirements.txt
 
 COPY . /code
 
-CMD ["python3", "./testsite/manage.py", "runserver"]
+#CMD ["python3", "./roseking/manage.py", "runserver"]
+CMD ["python3", "./roseking/manage.py", "runserver"]

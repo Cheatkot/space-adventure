@@ -14,6 +14,7 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 import chat.routing
 import waiting_room.routing
+import game.routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'roseking.settings')
 
@@ -22,7 +23,8 @@ application = ProtocolTypeRouter({
   'websocket': AuthMiddlewareStack(
       URLRouter(
           chat.routing.websocket_urlpatterns +
-          waiting_room.routing.websocket_urlpatterns
+          waiting_room.routing.websocket_urlpatterns +
+          game.routing.websocket_urlpatterns
       )
   ),
 })

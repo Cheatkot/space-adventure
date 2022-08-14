@@ -3,8 +3,14 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-    <h1>Home</h1>
-    <p>Hallo {{ user.username }}!<br></p>
+    <br>
+     {% if user.is_authenticated %}
+    <h2><p>Hallo {{ user.username }}!</p></h2><br>
+     {% else %}
+    <h3><p>Um das Spiel spielen zu können, musst Du angemeldet sein.<br>
+        Wenn Du bereits ein Login hast, kannst Du Dich unten anmelden.<br>
+        Alternativ kannst Du Dich kostenlos registrieren.</p></h3><br>
+     {% endif %}
     <div style="display:inline-block;width:70%">
     <p>Herzlich Willkommen bei BREZEL WARS!</p>
     <p>Hier kannst Du eine Abwandlung des Brettspiels Rosenkönig gegen anderen Spieler spielen.</p>
