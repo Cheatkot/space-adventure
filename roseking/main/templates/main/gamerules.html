@@ -10,15 +10,15 @@
         <li>1 Spielfeld</li>
         <li>52 Brezelsteine</li>
         <li>24 Machtkarten</li>
-        <li>8 Heldenkarten</li>
+        <li>8 Joker</li>
         <li>1 Bierkrug-Stein</li>
     </ul>
 
     <h2>Spielaufbau</h2>
     <p>Jeder Spieler erhält 5 Machtkarten. Der Rest liegt als Aufnahmestapel neben dem Spielfeld. Die 5 Karten werden offen vor den Spielern  gelegt.</br>
-    Beide Spieler erhalten 4 Heldenkarten in der Farbe ihrer Brezel.</br>
-    Der Bierkrug-Stein wird auf das zentrale Mittelfeld des Spielfeldes gelegt.</br>
-    Der zu beginnende Spieler wird zufällig ausgelost.</p>
+    Beide Spieler erhalten 4 Joker.</br>
+    Der Bierkrug-Stein wird auf das zentrale Mittelfeld des Spielfeldes gelegt.<br>
+    Der Spieler, der zuerst den "Spielraum" betritt, fängt an.</p>
 
     <h2>Spielweise</h2>
     <p>
@@ -26,7 +26,7 @@
     <ol>
         <li>Machtkarte spielen</li>
         <li>Machtkarte ziehen</li>
-        <li>Heldenkarte zusammen mit Machtkarte spielen</li>
+        <li>Joker zusammen mit Machtkarte spielen</li>
     </ol>
     Kann ein Spieler keine dieser drei Aktionen ausführen, muss er aussetzen. Der Gegenspieler ist solange an der Reihe, bis der aussetzende Spieler wieder einen Zug ausführen kann.
     </p>
@@ -35,17 +35,17 @@
     <p>
     Der Spieler spielt eine seiner Machtkarten offen ab und bewegt den Bierkrug-Stein in die auf der Karte angegebene Richtung um die angegebene Zugweite.</br>
     Zugbeispiel: <img src="{% static "main/pictures/beispielzug.png" %}" alt="Beispielzug" style="padding-top:1%; padding-bottom:1%" width="300px"></br>
-    Die helle Weißwurst gibt eine der acht Richtungen an, in die gezogen wird. In dem Bierkrug befindet sich eine römische Ziffer I, II oder III, um die der Bierkrug-Stein weitergezogen wird.
+    Der Kompass gibt eine der acht Richtungen an, in die gezogen wird. Unter dem Kompass befindet sich eine Ziffer 1, 2 oder 3, um die der Bierkrug-Stein weitergezogen wird.
     </p>
     <p>
     <b>Für das Bewegen des Bierkrug-Steins gelten folgende Regeln:</b>
     <ul>
         <li>Die Zugweite muss vollständig genutzt werden. Der Spieler darf nicht weniger Felder ziehen, als auf der Karte angegeben sind.</li>
         <li>Das Zielfeld muss unbenutzt sein. Es darf sich nicht bereits ein Machtstein (egal von welchem Spieler) darauf befinden.</li>
-        <li>Es darf keine Karte gespielt werden, mit der der Bierkrug-Stein über den Spielfeldrand hinausgezogen würde.</li>
+        <li>Es darf keine Karte gespielt werden, mit der der Bierkrug-Stein über den Spielfeldrand hinausgezogen werden würde.</li>
     </ul>
 
-    <p>Bevor der Spieler den Bierkrug-Stein auf dem Zielfeld absetzt, markiert er dieses Feld mit einem Machtstein seiner Farbe. Auf den Machtstein wird dann der Bierkrug-Stein gesetzt.</p>
+    <p>Bevor der Spieler den Bierkrug-Stein auf dem Zielfeld absetzt, markiert er dieses Feld mit einem Brezelstein seiner Farbe. Auf den Machtstein wird dann der Bierkrug-Stein gesetzt.</p>
     </p>
 
     <h3>2. Machtkarte ziehen</h3>
@@ -55,14 +55,14 @@
     <p>Die gezogene Karte wird offen zu den eigenen Karten gelegt.</p>
     <p>Sollte der Nachziehstapel aufgebraucht sein, wird der Ablagestapel gemischt und als neuer Nachziehstapel bereitgelegt.</p>
 
-    <h3>3. Heldenkarte zusammen mit Machtkarte spielen</h3>
-    <p>Jeder Spieler hat vier Heldenkarten, die er während des Spiels einsetzen darf.
-        Hat er alle Heldenkarten eingesetzt, hat er diese Möglichkeit nicht mehr.
-        Durch den Einsatz von Heldenkarten darf ein Spieler gegnerische Machtsteine, die sich bereits auf dem Plan befinden, umdrehen.</br>
-        Da die Heldenkarten sehr mächtig sind, sollte ihr Einsatz wohlüberlegt sein.</p>
+    <h3>3. Joker zusammen mit Machtkarte spielen</h3>
+    <p>Jeder Spieler hat vier Joker, die er während des Spiels einsetzen darf.
+        Hat er alle Joker eingesetzt, hat er diese Möglichkeit nicht mehr.
+        Durch den Einsatz von Joker darf ein Spieler gegnerische Machtsteine, die sich bereits auf dem Plan befinden, umdrehen.</br>
+        Da die Joker sehr mächtig sind, sollte ihr Einsatz wohlüberlegt sein.</p>
 
     <b>Machtstein umdrehen:</b>
-    <p>Gegen Abgabe einer Heldenkarte kann ein Spieler einen bereits gesetzen Machtstein des Mitspielers umdrehen.
+    <p>Gegen Abgabe eines Jokers kann ein Spieler einen bereits gesetzen Machtstein des Mitspielers umdrehen.
         Dazu legt er, wie unter 1. beschrieben, eine seiner Machtkarten auf den Ablagestapel und
         zieht den Bierkrug-Stein auf das angegebene und vom Mitspieler besetzte Feld.
         Bevor er den Bierkrug-Stein auf dem Feld absetzt, dreht er den dort liegenden Machtstein um, sodass nun die eigene Brezelfarbe oben liegt.</p>
@@ -77,11 +77,13 @@
     <p>Nun ermittelt jeder Spieler den Wert seiner Gebiete.
        Gebiete sind ein oder mehrere Felder, die mindestens über eine Seite miteinander verbunden sind.
        Verbindungen nur über Eck zählen nicht. Die Anzahl der Felder, die zusammenhängen, wird mit sich selber multipliziert.</p>
-    <p>Die Punkte aller eigenen Gebiete werden addiert. Wer die höchste Punktzahl hat, gewinnt.
-       Bei Gleichstand gewinnt der Spieler mit dem größten Einzelgebiet. Ist auch dieses gleich, gewinnt, wer die meisten Rosen auf dem Plan hat.</p>
+    <p>Die Punkte aller eigenen Gebiete werden addiert. Wer die höchste Punktzahl hat, gewinnt.</p>
 
     <h2>Bedienung</h2>
-    <p>Muss noch ergänzt werden!</p>
+    <p>Um während es Spiels Interaktionen ausführen zu können, klicke eine deiner Karten am unteren Bildschirm an. Dann wird die angeklickte Karte lila hinterlegt und
+    Dir gezeigt, wo dich die Karte auf dem Spielfeld hinführt. Ein grüne Markierung bedeutet ein freies Feld, ein gelbe Markierung erfordert den Einsatz eines Jokers und
+    eine rote Markierung weißt auf ein unerreichbares Feld hin. Ein zweiter Klick auf die lila markierte Karte führt dazu, dass die Karte ausgespielt wird. Zudem kann auf
+    den oberen Kartenstapel links vom Spielfeld zwei Mal geklickt werden, um eine Karte zu ziehen.</p>
 
 
 {% endblock %}
