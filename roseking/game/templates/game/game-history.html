@@ -15,7 +15,8 @@
                 <h4>Spieler_2: {{ item.player_two_username }} --> Punkte: {{ item.player_two_points }}</h4>
                 <h4>Startzeit: {{ item.started_at }}</h4>
                 <h4>Endzeit: {{ item.ended_at }}</h4>
-                <p>Spiel-Log: {{ item.steps }}</p>
+                <h6>Spiel-Log:</h6>
+                <div class="overflow-auto">{{ item.steps }}</div>
             </div>
         </div>
     {% endfor %}
