@@ -1,4 +1,6 @@
 let activeCardId = null;
+let markedField = null;
+let joker_active = false;
 
 function size(){
     let divs = $('.play-field');
@@ -37,8 +39,8 @@ function setPlayerPoints(userName, user, playerNumber, points) {
             $('#your-points').text("Punkte: " + points[playerNumber - 1]);
             $('#enemy-points').text("Punkte: " + points[playerNumber]);
         } else {
-            $('#your-points').text("Punkte: " + points[playerNumber - 2]);
-            $('#enemy-points').text("Punkte: " + points[playerNumber - 1]);
+            $('#your-points').text("Punkte: " + points[playerNumber - 1]);
+            $('#enemy-points').text("Punkte: " + points[playerNumber - 2]);
         }
     } else {
         if (playerNumber === 1) {
@@ -47,6 +49,26 @@ function setPlayerPoints(userName, user, playerNumber, points) {
         } else {
             $('#your-points').text("Punkte: " + points[playerNumber - 2]);
             $('#enemy-points').text("Punkte: " + points[playerNumber - 1]);
+        }
+    }
+}
+
+function setPlayerJoker(userName, user, playerNumber, playerOneJoker, playerTwoJoker) {
+    if (userName === user) {
+        if (playerNumber === 1) {
+            $('#your-joker').text("Joker: " + playerOneJoker);
+            $('#enemy-joker').text("Joker: " + playerTwoJoker);
+        } else {
+            $('#your-joker').text("Joker: " + playerTwoJoker);
+            $('#enemy-joker').text("Joker: " + playerOneJoker);
+        }
+    } else {
+        if (playerNumber === 1) {
+            $('#your-joker').text("Joker: " + playerTwoJoker);
+            $('#enemy-joker').text("Joker: " + playerOneJoker);
+        } else {
+            $('#your-joker').text("Joker: " + playerOneJoker);
+            $('#enemy-joker').text("Joker: " + playerTwoJoker);
         }
     }
 }
@@ -81,16 +103,32 @@ function activateLastPlayed() {
 
 function setActivePlayer(userName, user) {
     if (userName === user) {
-        $('#your-username').css('background-color', '#dc3545');
+        $('#your-username').css('background-color', '#a370f7');
         $('#enemy-username').css('background-color', '');
     } else {
-        $('#enemy-username').css('background-color', '#dc3545');
+        $('#enemy-username').css('background-color', '#a370f7');
         $('#your-username').css('background-color', '');
     }
 }
 
 function setBrezelStones(stones) {
     $('#brezelStones').text('Brezeln: ' + stones);
+}
+
+function playCard(userName, data) {
+    targetField = $('#f' + data.target_position[0] + '-' + data.target_position[1]);
+
+    $('#beer-mug').remove();
+
+    activateLastPlayed();
+    putCardOnDiscardPile(userName, data.username, data.card_id, data.played_card);
+    targetField.html('<img src="/static/game/images/Brezel' + data.player_number + '.png" class="last-played d-none game-figure player_' + data.player_number + '"><img id="beer-mug" src="/static/game/images/Bier.png" class="game-figure">');
+    size();
+
+    setPlayerPoints(userName, data.username, data.player_number, data.points);
+
+    setBrezelStones(data.brezel_stones);
+    setActivePlayer(userName, data.active_player);
 }
 
 function putCardOnDiscardPile(userName, user, cardId, playedCard) {
@@ -164,6 +202,8 @@ $(document).ready((e) => {
 
         let activeCard = null;
 
+        size();
+
         if (pattern.test(id) || pattern2.test(id)) {
             console.log(1);
 
@@ -171,8 +211,14 @@ $(document).ready((e) => {
                 console.log(2);
                 activeCardId = id;
                 activeCard = $('#' + activeCardId);
-                activeCard.css('background-color', '#dc3545');
-                // mark field in playfield if ok; send message to websocket
+                activeCard.css('background-color', '#a370f7');
+
+                gameSocket.send(JSON.stringify({
+                        'type': 'check_move',
+                        'message': {
+                            'card_id': activeCardId.split('-')[1],
+                        },
+                    }));
             } else if (activeCardId === id) {
                 console.log(3);
                 // send message to websocket
@@ -184,6 +230,13 @@ $(document).ready((e) => {
                         'type': 'draw_card',
                         'message': '',
                     }));
+                } else if (!activeCard.hasClass('invisible') && joker_active) {
+                    gameSocket.send(JSON.stringify({
+                        'type': 'play_joker_card',
+                        'message': {
+                            'card_id': activeCardId.split('-')[1],
+                        },
+                    }));
                 } else if (!activeCard.hasClass('invisible')) {
                     gameSocket.send(JSON.stringify({
                         'type': 'play_card',
@@ -194,15 +247,20 @@ $(document).ready((e) => {
                 }
 
                 activeCardId = null;
-            } else if (pattern2.test(id)) {
-
             } else {
                 console.log(4);
                 activeCard = $('#' + activeCardId);
                 activeCard.css('background-color', '#e9ecef');
                 activeCardId = id;
                 activeCard = activeCard = $('#' + activeCardId);
-                activeCard.css('background-color', '#dc3545');
+                activeCard.css('background-color', '#a370f7');
+
+                gameSocket.send(JSON.stringify({
+                        'type': 'check_move',
+                        'message': {
+                            'card_id': activeCardId.split('-')[1],
+                        },
+                    }));
             }
         }
     });
@@ -312,28 +370,36 @@ $(document).ready((e) => {
                 case "play_card":
                     console.log("play card.");
 
-                    targetField = $('#f' + data.target_position[0] + '-' + data.target_position[1]);
-
-                    $('#beer-mug').remove();
-                    console.log('#f' + data.target_position[0] + '-' + data.target_position[1]);
-                    activateLastPlayed();
-                    putCardOnDiscardPile(userName, data.username, data.card_id, data.played_card);
-                    targetField.html('<img src="/static/game/images/Brezel' + data.player_number + '.png" class="last-played d-none game-figure player_' + data.player_number + '"><img id="beer-mug" src="/static/game/images/Bier.png" class="game-figure">');
-                    size();
-                    console.log(data.points);
-                    setPlayerPoints(userName, data.username, data.player_number, data.points);
-
-                    setBrezelStones(data.brezel_stones);
-                    setActivePlayer(userName, data.active_player);
+                    playCard(userName, data);
 
                     break;
                 case "play_joker_card":
                     console.log("play joker card.");
 
-                    targetField = $('#f' + data.target_position[0] + '-' + data.target_position[0]);
+                    playCard(userName, data);
+                    setPlayerJoker(userName, data.username, data.player_number, data.joker_player_one, data.joker_player_two);
 
-                    activateLastPlayed();
-                    setPlayerPoints(userName, data.username, data.player_number, data.points);
+                    break;
+                case "check_move":
+                    console.log("check move.");
+
+                    joker_active = false;
+
+                    if (userName === data.username) {
+                        markedField = '#f' + data.target_position[0] + '-' + data.target_position[1];
+                        targetField = $(markedField);
+
+                        if (data.possible) {
+                            if (data.joker_use) {
+                                targetField.css('background-color', '#ffc107');
+                                joker_active = true;
+                            } else {
+                                targetField.css('background-color', '#20c997');
+                            }
+                        } else {
+                            targetField.css('background-color', '#dc3545');
+                        }
+                    }
 
                     break;
                 case "game_error":
@@ -344,8 +410,27 @@ $(document).ready((e) => {
 
                     break;
                 case "game_over":
-                    let title = 'Gewonnen';
-                    let message = 'Herzlichen Glückwunsch! Sie haben gewonnen!';
+                    let title;
+                    let message;
+
+                    if (userName === data.username) {
+                        title = 'Gewonnen!';
+
+                        if (userName === data.player_one) {
+                            message = 'Herzlichen Glückwunsch! Sie haben gegen "' + data.player_two + '" mit ' + data.points[0] + ' zu ' + data.points[1] + ' Punkten gewonnen! :)';
+                        } else {
+                            message = 'Herzlichen Glückwunsch! Sie haben gegen "' + data.player_one + '" mit ' + data.points[1] + ' zu ' + data.points[0] + ' Punkten gewonnen! :)';
+                        }
+                    } else {
+                        title = 'Verloren!';
+
+                        if (userName === data.player_one) {
+                            message = 'Schade! Sie haben gegen "' + data.player_two + '" mit ' + data.points[0] + ' zu ' + data.points[1] + ' Punkten verloren! :(';
+                        } else {
+                            message = 'Schade! Sie haben gegen "' + data.player_one + '" mit ' + data.points[1] + ' zu ' + data.points[0] + ' Punkten verloren! :(';
+                        }
+                    }
+
                     showModalWithButton(title, message, 'Zurück zur Hauptseite!');
 
                     break;

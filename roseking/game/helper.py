@@ -1,3 +1,4 @@
+import datetime
 import random
 
 active_games = {}
@@ -7,11 +8,13 @@ class Game:
 
     def __init__(self, game_id, user):
         self.game_id = game_id
+        self.game_start_time = None
         self.player_one = user
         self.player_two = None
         self.points_player_one = 0
         self.points_player_two = 0
-        self.play_field = [[0 for i in range(9)] for i in range(9)] # 1: PlayerOne, 2: PlayerTwo, 3: BeerMug, 4: BeerMug + PlayerOne, 5: BeerMug + PlayerTwo
+        self.play_field = [[0 for i in range(9)] for i in range(
+            9)]  # 1: PlayerOne, 2: PlayerTwo, 3: BeerMug, 4: BeerMug + PlayerOne, 5: BeerMug + PlayerTwo
         self.beer_mug = [4, 4]
         self.brezel_stones = 52
         self.cards_player_one = {}
@@ -22,7 +25,7 @@ class Game:
                                    ['N', 2], ['NE', 2], ['E', 2], ['SE', 2], ['S', 2], ['SW', 2], ['W', 2], ['NW', 2],
                                    ['N', 3], ['NE', 3], ['E', 3], ['SE', 3], ['S', 3], ['SW', 3], ['W', 3], ['NW', 3]]
         self.cards_in_discard_pile = []
-        self.steps = "" # Coded in: <PlayerNumber>_<Kartenquelle>_<KarteRichtung>_<KartenStep>_<Kartenziel>;<NEXTSTEP> TODO: reicht das?
+        self.steps = ""  # Coded in: <PlayerNumber>_<Kartenquelle>_<KarteRichtung>_<KartenStep>_<Kartenziel>;<NEXTSTEP> TODO: reicht das?
         self.active_player_number = None
         self.random_number = None
         self.current_card_id = None
@@ -35,10 +38,18 @@ class Game:
             return -1
 
     def change_active_player(self):
+        print(self.check_possible_moves(self.active_player_number))
+        print("activeplayer:", self.active_player_number)
+
+        if self.check_possible_moves(self.active_player_number) in [-1, []]:
+            return
+
         if self.active_player_number == 1:
             self.active_player_number = 2
         else:
             self.active_player_number = 1
+
+        print("activeplayer2:", self.active_player_number)
 
     def get_player_cards(self, player_number):
         if player_number == 1:
@@ -119,16 +130,16 @@ class Game:
                 if move_possibility == 0:
                     possible_moves.append(key)
                 elif move_possibility == 1:
-                    possible_moves.append(key + 10)
+                    possible_moves.append(str(int(key) + 10))
 
         return possible_moves
 
     def check_for_end_of_game(self):
         if self.brezel_stones <= 0:
-            return 0
+            return self.player_one if self.points_player_one > self.joker_player_two else self.player_two
 
         if self.check_possible_moves(1) == [] and self.check_possible_moves(2) == []:
-            return 0
+            return self.player_one if self.points_player_one > self.joker_player_two else self.player_two
 
         return -1
 
@@ -238,18 +249,25 @@ class Game:
 
                         zwErg_player_two_points += zwErg_counter ** 2
 
+        self.points_player_one = zwErg_player_one_points
+        self.points_player_two = zwErg_player_two_points
+
         return [zwErg_player_one_points, zwErg_player_two_points]
 
     def game_start(self):
-        # self.play_field[4][4] = 3
+        self.game_start_time = datetime.datetime.now()
 
         for i in range(5):
-            self.cards_player_one[(i + 1).__str__()] = self.cards_in_draw_pile[self.create_random_number(len(self.cards_in_draw_pile))]
-            self.steps += "1_drawpile_" + self.cards_player_one[(i + 1).__str__()][0] + "_" + self.cards_player_one[(i + 1).__str__()][0] + "_" + "cardsplayerone;"
+            self.cards_player_one[(i + 1).__str__()] = self.cards_in_draw_pile[
+                self.create_random_number(len(self.cards_in_draw_pile))]
+            self.steps += "1_drawpile_" + self.cards_player_one[(i + 1).__str__()][0] + "_" + \
+                          str(self.cards_player_one[(i + 1).__str__()][1]) + "_" + "cardsplayerone;"
             self.cards_in_draw_pile.pop(self.random_number)
 
-            self.cards_player_two[(i + 1).__str__()] = self.cards_in_draw_pile[self.create_random_number(len(self.cards_in_draw_pile))]
-            self.steps += "2_drawpile_" + self.cards_player_two[(i + 1).__str__()][0] + "_" + self.cards_player_two[(i + 1).__str__()][0] + "_" + "cardsplayertwo;"
+            self.cards_player_two[(i + 1).__str__()] = self.cards_in_draw_pile[
+                self.create_random_number(len(self.cards_in_draw_pile))]
+            self.steps += "2_drawpile_" + self.cards_player_two[(i + 1).__str__()][0] + "_" + \
+                          str(self.cards_player_two[(i + 1).__str__()][1]) + "_" + "cardsplayertwo;"
             self.cards_in_draw_pile.pop(self.random_number)
 
         self.active_player_number = 1
@@ -260,7 +278,7 @@ class Game:
         player_cards = self.get_player_cards(player_number)
 
         if len(self.cards_in_draw_pile) == 0:
-            self.cards_in_draw_pile = self.cards_in_discard_pile
+            self.cards_in_draw_pile = self.cards_in_discard_pile.copy()
             self.cards_in_discard_pile = []
 
         if player_cards == -1:
@@ -272,9 +290,18 @@ class Game:
         if len(player_cards) < 5:
             for i in range(5):
                 if (i + 1).__str__() not in player_cards.keys():
-                    player_cards[(i + 1).__str__()] = self.cards_in_draw_pile[self.create_random_number(len(self.cards_in_draw_pile))]
+                    player_cards[(i + 1).__str__()] = self.cards_in_draw_pile[
+                        self.create_random_number(len(self.cards_in_draw_pile))]
                     self.cards_in_draw_pile.pop(self.random_number)
                     self.current_card_id = (i + 1).__str__()
+
+                    if player_number == 1:
+                        self.steps += "1_drawpile_" + self.cards_player_one[self.current_card_id][0] + "_" + \
+                                      str(self.cards_player_one[self.current_card_id][1]) + "_" + "cardsplayerone;"
+                    else:
+                        self.steps += "2_drawpile_" + self.cards_player_two[self.current_card_id][0] + "_" + \
+                                      str(self.cards_player_two[self.current_card_id][1]) + "_" + "cardsplayertwo;"
+
                     break
         else:
             return -1
@@ -319,6 +346,10 @@ class Game:
         self.brezel_stones -= 1
         self.cards_in_discard_pile.append(player_cards[card_id])
         player_cards.pop(card_id, None)
+
+        source = "cardsplayerone" if player_number == 1 else "cardsplayertwo"
+        self.steps += str(player_number) + "_" + source + "_" + self.cards_in_discard_pile[-1][0] + "_" + \
+                      str(self.cards_in_discard_pile[-1][1]) + "_" + "discardpile;"
 
         self.change_active_player()
 
