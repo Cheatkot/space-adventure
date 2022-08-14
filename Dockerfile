@@ -10,5 +10,5 @@ RUN pip3 install -r requirements.txt
 
 COPY . /code
 
-#CMD ["python3", "./roseking/manage.py", "runserver"]
+CMD ["docker", "run", "-p", "6379:6379", "-d", "redis:5"]
 CMD ["python3", "./roseking/manage.py", "runserver"]
