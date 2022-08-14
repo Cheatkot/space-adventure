@@ -7,18 +7,32 @@
     <br>
     <br>
 
-    {% for item in ls %}
-        <div class="container">
-            <div class="row m-3">
-                <h3>GameID: {{ item.game_id }}</h3>
-                <h4>Spieler_1: {{ item.player_one_username }} --> Punkte: {{ item.player_one_points }}</h4>
-                <h4>Spieler_2: {{ item.player_two_username }} --> Punkte: {{ item.player_two_points }}</h4>
-                <h4>Startzeit: {{ item.started_at }}</h4>
-                <h4>Endzeit: {{ item.ended_at }}</h4>
-                <h6>Spiel-Log:</h6>
-                <div class="overflow-auto">{{ item.steps }}</div>
-                <hr class="mt-3 mb-5">
-            </div>
-        </div>
-    {% endfor %}
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Game_ID</th>
+                    <th scope="col">Spieler 1</th>
+                    <th scope="col">Spieler 2</th>
+                    <th scope="col">Punkte Spieler 1</th>
+                    <th scope="col">Punkte Spieler 2</th>
+                    <th scope="col">Startzeit</th>
+                    <th scope="col">Endzeit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in ls %}
+                    <tr>
+                        <th scope="row">{{ item.game_id }}</th>
+                        <td>{{ item.player_one_username }}</td>
+                        <td>{{ item.player_two_username }}</td>
+                        <td>{{ item.player_one_points }}</td>
+                        <td>{{ item.player_two_points }}</td>
+                        <td>{{ item.started_at }}</td>
+                        <td>{{ item.ended_at }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
