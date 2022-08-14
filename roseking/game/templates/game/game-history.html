@@ -1,0 +1,22 @@
+{% extends 'main/base.html'  %}
+{% load static %}
+{% block title %}Spiel-Historie{% endblock %}
+
+{% block content %}
+    <h1 class="mt-2">Hier findest du deine gespielten Spiele</h1>
+    <br>
+    <br>
+
+    {% for item in ls %}
+        <div class="container">
+            <div class="row m-3">
+                <h3>GameID: {{ item.game_id }}</h3>
+                <h4>Spieler_1: {{ item.player_one_username }} --> Punkte: {{ item.player_one_points }}</h4>
+                <h4>Spieler_2: {{ item.player_two_username }} --> Punkte: {{ item.player_two_points }}</h4>
+                <h4>Startzeit: {{ item.started_at }}</h4>
+                <h4>Endzeit: {{ item.ended_at }}</h4>
+                <p>Spiel-Log: {{ item.steps }}</p>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
