@@ -1,0 +1,24 @@
+{% extends "main/base.html" %}
+
+{% load static %}
+
+{% block title %}Chatraum: {{ chat_room.name }}{% endblock %}
+
+{% block navbar %}{% endblock %}
+
+{% block content %}
+    <div class="container mt-5 pb-5">
+        <div id="chat-field" class="mb-5 pb-5 position-static container"></div>
+    </div>
+    <br>
+
+    <div class="input-group fixed-bottom p-5 bg-dark">
+        <textarea id="chat-message-input" rows="1" class="form-control"></textarea>
+        <input id="chat-message-submit" type="button" value="Send" class="btn btn-success">
+    </div>
+    {{ chat_room.name|json_script:"chat-room-name" }}
+    {{ user.username|json_script:"user-name" }}
+    <script type="text/javascript" src="{% static 'chat/js/chat-room.js' %}"></script>
+{% endblock %}
+
+{% block footer %}{% endblock %}
