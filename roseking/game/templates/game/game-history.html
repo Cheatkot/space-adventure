@@ -3,7 +3,7 @@
 {% block title %}Spiel-Historie{% endblock %}
 
 {% block content %}
-    <h1 class="mt-2">Hier findest du deine gespielten Spiele</h1>
+    <h1 class="mt-2">Hier findest du deine gespielten Spiele:</h1>
     <br>
     <br>
 
@@ -17,6 +17,7 @@
                 <h4>Endzeit: {{ item.ended_at }}</h4>
                 <h6>Spiel-Log:</h6>
                 <div class="overflow-auto">{{ item.steps }}</div>
+                <hr class="mt-3 mb-5">
             </div>
         </div>
     {% endfor %}
