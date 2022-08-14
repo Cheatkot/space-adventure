@@ -1,0 +1,199 @@
+{% extends "main/base.html" %}
+
+{% load static %}
+
+{% block title %}Rosenkönig{% endblock %}
+
+{% block navbar %}{% endblock %}
+
+{% block content %}
+    <div id="play-area" class="container" onload="size">
+        <div class="row mt-1">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <div class="row">
+                    <div class="col-sm-1"></div>
+
+                    <div class="col-sm-2">
+                        <div id="p2-1" class="card invisible" style="background-color: #e9ecef; max-height: 90%">
+                          <img id="p2-1-img" src="{% static 'game/images/compassNorthEast.png' %}" class="card-img-top" alt="Go West 3">
+                          <div class="card-body">
+                            <p id="p2-1-txt" class="card-text text-center fw-bolder" style="color: black">3</p>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div id="p2-2" class="card invisible" style="background-color: #e9ecef; max-height: 90%">
+                          <img id="p2-2-img" src="{% static 'game/images/compassNorthEast.png' %}" class="card-img-top" alt="Go West 3">
+                          <div class="card-body">
+                            <p id="p2-2-txt" class="card-text text-center fw-bolder" style="color: black">3</p>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div id="p2-3" class="card invisible" style="background-color: #e9ecef; max-height: 90%">
+                          <img id="p2-3-img" src="{% static 'game/images/compassEast.png' %}" class="card-img-top" alt="Go West 3">
+                          <div class="card-body">
+                            <p id="p2-3-txt" class="card-text text-center fw-bolder" style="color: black">3</p>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div id="p2-4" class="card invisible" style="background-color: #e9ecef; max-height: 90%">
+                          <img id="p2-4-img" src="{% static 'game/images/compassSouthEast.png' %}" class="card-img-top" alt="Go West 3">
+                          <div class="card-body">
+                            <p id="p2-4-txt" class="card-text text-center fw-bolder" style="color: black">3</p>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div id="p2-5" class="card invisible" style="background-color: #e9ecef; max-height: 90%">
+                          <img id="p2-5-img" src="{% static 'game/images/compassSouth.png' %}" class="card-img-top" alt="Go West 3">
+                          <div class="card-body">
+                            <p id="p2-5-txt" class="card-text text-center fw-bolder" style="color: black">3</p>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-1"></div>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <div class="row m-2">
+            <div id="card-stacks" class="col-3">
+                <div id="draw-pile" class="card mb-2"  style="background-color: #e9ecef; max-width: 90%"> <!-- TODO: Kartenstapel in die Mitte -->
+                  <img src="{% static 'game/images/cardBack.png' %}" id="draw-pile-img" class="card-img" alt="Kartenrücken">
+                </div>
+
+                <div id="discard-pile" class="card mt-2 invisible"  style="background-color: #e9ecef; max-width: 90%"> <!-- TODO: Kartenstapel in die Mitte -->
+                  <img id="discard-pile-img" src="{% static 'game/images/compassWest.png' %}" class="card-img-top" alt="W">
+                  <div class="card-body">
+                    <p id="discard-pile-txt" class="card-text text-center fw-bolder" style="color: black">3</p>
+                  </div>
+                </div>
+            </div>
+            <div class="col-6">
+                {% for i in range %}
+                    <div class="row">
+                        {% for j in range %}
+                            {% if i == range|length|add:-1 and j == range|length|add:-1 %}
+                                <div id="f{{ i }}-{{ j }}" class="col play-field border border-2 border-primary"></div>
+                            {% elif i == range|length|add:-1 %}
+                                <div id="f{{ i }}-{{ j }}" class="col play-field border-start border-top border-bottom border-2 border-primary"></div>
+                            {% elif j == range|length|add:-1 %}
+                                <div id="f{{ i }}-{{ j }}" class="col play-field border-start border-top border-end border-2 border-primary"></div>
+                            {% else %}
+                                <div id="f{{ i }}-{{ j }}" class="col play-field border-start border-top border-2 border-primary"></div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-3">
+                <div class="card m-2">
+                  <div id="your-username" class="card-header">{{ user.username }}</div>
+                  <div class="card-body">
+<!--                    <h6 class="card-title">Punkte</h6>-->
+                    <p id="your-points" class="card-text">Punkte: 0</p>
+<!--                    <h6 class="card-title">Joker</h6>-->
+                    <p id="your-joker" class="card-text">Joker: 4</p>
+                  </div>
+                </div>
+
+                <div class="card m-2">
+                  <div id="enemy-username" class="card-header">-- Unbekannt --</div>
+                  <div class="card-body">
+<!--                    <h6 class="card-title">Punkte</h6>-->
+                    <p id="enemy-points" class="card-text">Punkte: 0</p>
+<!--                    <h6 class="card-title">Joker</h6>-->
+                    <p id="enemy-joker" class="card-text">Joker: 4</p>
+                  </div>
+                </div>
+
+                <div class="card m-2">
+                  <div id="brezelStones" class="card-header">Brezeln: 52</div>
+                </div>
+
+                <div class="row m-2">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#chatOffcanvas" aria-controls="chatOffcanvas">Öffne Chat</button>
+                </div>
+
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="chatOffcanvas" aria-labelledby="chatOffcanvasLabel">
+                  <div class="offcanvas-header">
+                    <h5 id="chatOffcanvasLabel">Chat</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                  </div>
+                  <div class="offcanvas-body">
+                    <iframe src="/chat/iframe/{{ game_id }}" style="height: 100%"></iframe>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <div class="row">
+                    <div class="col-sm-1"></div>
+
+                    <div class="col-sm-2">
+                        <div id="p1-1" class="card invisible" style="background-color: #e9ecef; max-height: 90%">
+                          <img id="p1-1-img" src="{% static 'game/images/compassSouthWest.png' %}" class="card-img-top" alt="Go West 3">
+                          <div class="card-body">
+                            <p id="p1-1-txt" class="card-text text-center fw-bolder" style="color: black">3</p>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div id="p1-2" class="card invisible" style="background-color: #e9ecef; max-height: 90%">
+                          <img id="p1-2-img" src="{% static 'game/images/compassWest.png' %}" class="card-img-top" alt="Go West 3">
+                          <div class="card-body">
+                            <p id="p1-2-txt" class="card-text text-center fw-bolder" style="color: black">3</p>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div id="p1-3" class="card invisible" style="background-color: #e9ecef; max-height: 90%">
+                          <img id="p1-3-img" src="{% static 'game/images/compassNorthWest.png' %}" class="card-img-top" alt="Go West 3">
+                          <div class="card-body">
+                            <p id="p1-3-txt" class="card-text text-center fw-bolder" style="color: black">2</p>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div id="p1-4" class="card invisible" style="background-color: #e9ecef; max-height: 90%">
+                          <img id="p1-4-img" src="{% static 'game/images/compassWest.png' %}" class="card-img-top" alt="Go West 3">
+                          <div class="card-body">
+                            <p id="p1-4-txt" class="card-text text-center fw-bolder" style="color: black">3</p>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div id="p1-5" class="card invisible" style="background-color: #e9ecef; max-height: 90%">
+                          <img id="p1-5-img" src="{% static 'game/images/compassWest.png' %}" class="card-img-top" alt="Go West 3">
+                          <div class="card-body">
+                            <p id="p1-5-txt" class="card-text text-center fw-bolder" style="color: black">3</p>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-1"></div>
+                </div>
+            </div>
+            <div class="col-1"></div>
+        </div>
+    </div>
+    {{ game_id|json_script:"game-id" }}
+    {{ user.username|json_script:"user-name" }}
+    <script type="text/javascript" src="{% static 'game/js/brezelWars.js' %}"></script>
+{% endblock %}
+
+{% block footer %}{% endblock %}
