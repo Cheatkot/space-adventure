@@ -134,10 +134,10 @@ class Game:
 
     def check_for_end_of_game(self):
         if self.brezel_stones <= 0:
-            return self.player_one if self.points_player_one > self.joker_player_two else self.player_two
+            return self.player_one if self.points_player_one > self.points_player_two else self.player_two
 
         if self.check_possible_moves(1) == [] and self.check_possible_moves(2) == []:
-            return self.player_one if self.points_player_one > self.joker_player_two else self.player_two
+            return self.player_one if self.points_player_one > self.points_player_two else self.player_two
 
         return -1
 
