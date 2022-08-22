@@ -6,7 +6,18 @@ function size(){
     let divs = $('.play-field');
     let gameFigures = $('.game-figure');
     let cardImages = $('.card-img-top');
-    let divsWidth = divs[0].offsetWidth;
+    let playArea = $('#play-area');
+    let divsWidth = 0;
+    // let divsWidth = divs[0].offsetWidth;
+    let divsContentWidth = 0;
+    // let divsWidth = playArea.offsetWidth / 9;
+
+    for (let i = 0; i < divs.length; i++) {
+        if (divs[i].innerHTML === "") {
+            divsWidth = divs[i].offsetWidth;
+            divsContentWidth = divs[i].clientWidth;
+        }
+    }
 
     // $('#card-stacks').css('height', divsWidth * 9 + 'px');
     $('#draw-pile').css('height', divsWidth * 4.5 + 'px');
@@ -23,8 +34,8 @@ function size(){
     }
 
     for (let i = 0; i < gameFigures.length; i++) {
-        gameFigures[i].style.height = (divsWidth - 2) + 'px';
-        gameFigures[i].style.width = (divsWidth - 2) + 'px';
+        gameFigures[i].style.height = divsContentWidth + 'px';
+        gameFigures[i].style.width = divsContentWidth + 'px';
     }
 
     for (let i = 0; i < cardImages.length; i++) {

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import BrezelWar
+from itertools import chain
 
 
 @login_required
@@ -16,7 +17,6 @@ def main_game(request, game_id):
 @login_required
 def game_history(request):
     ls = BrezelWar.objects.filter(player_one_username__exact=request.user.username)
-    if not ls.exists():
-        ls = BrezelWar.objects.filter(player_two_username__exact=request.user.username)
+    ls = sorted(chain(BrezelWar.objects.filter(player_two_username__exact=request.user.username), ls), key=lambda instance: instance.started_at)
 
     return render(request, "game/game-history.html", {"ls": ls})
